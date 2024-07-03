@@ -30,15 +30,16 @@ jobs:
           node-version: '16'
 
       - name: Pull latest changes
-        run: git pull origin main
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git pull --rebase origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bump version
         id: bump_version
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
           npx standard-version --release-as patch
           git push --follow-tags
         env:
