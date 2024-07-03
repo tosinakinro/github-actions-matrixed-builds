@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: write  # Allow write access to the contents
+  contents: write  # Allow workflow write access to the contents
 
 jobs:
   build:
