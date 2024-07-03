@@ -37,3 +37,9 @@ jobs:
           file: ./${{ matrix.app }}/Dockerfile
           push: true
           tags: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/${{ matrix.app }}:latest
+
+      - name: Scan Docker image
+        uses: crazy-max/ghaction-container-scan@v3
+        with:
+          image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/${{ matrix.app }}:latest
+          
