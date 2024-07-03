@@ -8,6 +8,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write  # Allow write access to the contents
+
 jobs:
   build:
     runs-on: ubuntu-latest
