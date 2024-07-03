@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [docker-image-1, docker-image-2, docker-image-3, docker-image-4, docker-image-5]
+        app: [docker-image-1, docker-image-2, docker-image-3, docker-image-4, docker-image-5],
         ecr_uri: [
           ${{ secrets.ECR_URI_1 }},
           ${{ secrets.ECR_URI_2 }},
