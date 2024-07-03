@@ -36,4 +36,4 @@ jobs:
           context: ./${{ matrix.app }}
           file: ./${{ matrix.app }}/Dockerfile
           push: true
-          tags: ${{ matrix.ecr_uri }}:latest
+          tags: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/${{ matrix.app }}:latest
