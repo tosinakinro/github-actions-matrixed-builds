@@ -19,6 +19,24 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Bump version
+        id: bump_version
+        uses: phips28/gh-action-bump-version@v9
+        with:
+          branch: main
+          skip-tag: false
+          tag-prefix: "v"
+
+      - name: Extract new version
+        id: extract_version
+        run: echo "NEW_VERSION=${{ steps.bump_version.outputs.new_version }}" >> $GITHUB_ENV
+
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
@@ -36,10 +54,9 @@ jobs:
           context: ./${{ matrix.app }}
           file: ./${{ matrix.app }}/Dockerfile
           push: true
-          tags: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/${{ matrix.app }}:latest
+          tags: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/${{ matrix.app }}v${{ env.NEW_VERSION }}
 
       - name: Scan Docker image
         uses: crazy-max/ghaction-container-scan@v3
         with:
-          image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/${{ matrix.app }}:latest
-          
+          image: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.us-east-2.amazonaws.com/${{ matrix.app }}v${{ env.NEW_VERSION }}
