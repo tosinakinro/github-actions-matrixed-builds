@@ -26,16 +26,17 @@ jobs:
 
       - name: Bump version
         id: bump_version
-        uses: anothrNick/github-tag-action@1.38.0
+        run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          npx standard-version --release-as patch
+          git push --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
-          TAG_PREFIX: "v"
-          CUSTOM_TAG: ""
 
       - name: Extract new version
         id: extract_version
-        run: echo "NEW_VERSION=${{ steps.bump_version.outputs.new_tag }}" >> $GITHUB_ENV
+        run: echo "NEW_VERSION=$(node -p -e \"require('./package.json').version\")" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
