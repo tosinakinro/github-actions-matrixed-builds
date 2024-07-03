@@ -41,6 +41,7 @@ jobs:
         id: bump_version
         run: |
           npx standard-version --release-as patch
+          git pull --rebase origin main
           git push --follow-tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
